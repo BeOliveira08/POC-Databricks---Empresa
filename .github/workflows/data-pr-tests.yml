@@ -1,0 +1,85 @@
+name: Data PR Tests
+
+on:
+  pull_request:
+    branches: [development, main]
+
+jobs:
+  formatting:
+    name: Formatting (black)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.3.0
+        with:
+          python-version: '3.11'
+      - uses: actions/cache@v4.2.0
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements-dev.txt') }}
+      - run: pip install -r requirements-dev.txt
+      - run: black --check --verbose ./pipelines
+
+  lint:
+    name: Lint (flake8)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.3.0
+        with:
+          python-version: '3.11'
+      - uses: actions/cache@v4.2.0
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements-dev.txt') }}
+      - run: pip install -r requirements-dev.txt
+      - run: flake8 --max-line-length 120 --max-complexity 20 --exclude pipelines/notebooks/silver/silver_legado ./pipelines
+
+  secrets:
+    name: Secrets scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.3.0
+        with:
+          python-version: '3.11'
+      - uses: actions/cache@v4.2.0
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements-dev.txt') }}
+      - run: pip install -r requirements-dev.txt
+      - run: detect-secrets scan --baseline .secrets.baseline
+
+  run-refs:
+    name: Validate %run references
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.3.0
+        with:
+          python-version: '3.11'
+      - run: python scripts/validate_run_refs.py
+
+  governance:
+    name: Governance coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: actions/setup-python@v5.3.0
+        with:
+          python-version: '3.11'
+      - run: python scripts/validate_governance.py
+
+  # TODO: SQL lint com sqlfluff quando notebooks tiverem arquivos .sql separados
+  # sql-lint:
+  #   name: SQL lint (sqlfluff)
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4.2.2
+  #     - run: pip install sqlfluff
+  #     - run: sqlfluff lint --dialect sparksql ./pipelines

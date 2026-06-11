@@ -1,0 +1,14 @@
+resources:
+  jobs:
+    bronze_pipeline:
+      name: "[portfolio] Bronze Pipeline"
+      tasks:
+        - task_key: run_validated_core
+          notebook_task:
+            notebook_path: ${workspace.file_path}/pipelines/notebooks/run_validated_core
+            base_parameters:
+              catalog: ${var.catalog_name}
+              volume_path: ${var.volume_path}
+          timeout_seconds: 7200
+          max_retries: 1
+          retry_on_timeout: true

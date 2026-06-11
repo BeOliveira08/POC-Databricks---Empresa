@@ -1,0 +1,20 @@
+resources:
+  jobs:
+    setup_pipeline:
+      name: "[portfolio] Setup"
+      tasks:
+        - task_key: setup_catalog
+          notebook_task:
+            notebook_path: ${workspace.file_path}/pipelines/notebooks/setup/setup_catalog
+            base_parameters:
+              catalog: ${var.catalog_name}
+              volume_path: ${var.volume_path}
+
+        - task_key: setup_tables
+          depends_on:
+            - task_key: setup_catalog
+          notebook_task:
+            notebook_path: ${workspace.file_path}/pipelines/notebooks/setup/setup_tables
+            base_parameters:
+              catalog: ${var.catalog_name}
+

@@ -1,0 +1,39 @@
+# Databricks Bundle Ignore
+# Sintaxe: gitignore-style patterns
+
+# Raiz - arquivos de config
+databricks.yml
+.databrickignore
+package.json
+package-lock.json
+.env.example
+
+# Diretórios completos
+.git
+.github
+.databricks
+.claude
+.vscode
+.idea
+node_modules
+
+# Arquivos por padrão
+*.log
+*.tmp
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.pdf
+*.zip
+.gitignore
+.npmignore
+
+# Python
+__pycache__
+*.pyc
+.venv
+venv
+*.egg-info
+
+# IMPORTANTE: pipelines/ deve ser enviado (não listar aqui!)

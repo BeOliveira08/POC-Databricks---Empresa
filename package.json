@@ -1,0 +1,56 @@
+{
+  "name": "portfolio-lakehouse-template",
+  "version": "1.0.0",
+  "description": "Generic Databricks lakehouse template for portfolio projects",
+  "scripts": {
+    "_env": "dotenv -e .env --",
+    "validate": "dotenv -e .env -- databricks bundle validate",
+    "deploy": "npm run validate && dotenv -e .env -- databricks bundle deploy --auto-approve",
+    "redeploy": "dotenv -e .env -- databricks bundle destroy --auto-approve && npm run deploy",
+    "deploy:prod": "npm run validate && dotenv -e .env -- databricks bundle deploy --target prod --auto-approve",
+    "bootstrap": "dotenv -e .env -- databricks bundle run setup_pipeline",
+    "bootstrap:prod": "dotenv -e .env -- databricks bundle run setup_pipeline --target prod",
+    "jobs:list": "dotenv -e .env -- databricks jobs list --output json",
+    "jobs:bronze": "dotenv -e .env -- databricks bundle run bronze_pipeline",
+    "jobs:silver": "dotenv -e .env -- databricks bundle run silver_pipeline",
+    "jobs:gold": "dotenv -e .env -- databricks bundle run gold_pipeline",
+    "jobs:bronze:prod": "dotenv -e .env -- databricks bundle run bronze_pipeline --target prod",
+    "jobs:silver:prod": "dotenv -e .env -- databricks bundle run silver_pipeline --target prod",
+    "jobs:gold:prod": "dotenv -e .env -- databricks bundle run gold_pipeline --target prod",
+    "tables:list:bronze": "dotenv -e .env -- databricks tables list portfolio_dev bronze --output json",
+    "tables:list:silver": "dotenv -e .env -- databricks tables list portfolio_dev silver --output json",
+    "tables:list:gold": "dotenv -e .env -- databricks tables list portfolio_dev gold --output json",
+    "tables:export:gold:dev": "python scripts/export_gold_tables.py",
+    "tables:export:gold:prod": "python scripts/export_gold_tables.py --catalog portfolio",
+    "catalog:info": "dotenv -e .env -- databricks catalogs get portfolio_dev",
+    "catalog:schemas": "dotenv -e .env -- databricks schemas list portfolio_dev",
+    "governance:validate": "dotenv -e .env -- python scripts/validate_governance.py",
+    "governance:apply": "dotenv -e .env -- databricks bundle run apply_governance",
+    "lint": "flake8 --max-line-length 120 --max-complexity 20 ./pipelines",
+    "format": "black ./pipelines",
+    "format:check": "black --check ./pipelines",
+    "secrets:check": "detect-secrets scan --baseline .secrets.baseline",
+    "test:refs": "python scripts/validate_run_refs.py",
+    "test:local": "npm run governance:validate && npm run test:refs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:BeOliveira08/POC-Databricks---Empresa.git"
+  },
+  "keywords": [
+    "databricks",
+    "lakehouse",
+    "data-engineering",
+    "medallion-architecture",
+    "unity-catalog",
+    "portfolio"
+  ],
+  "author": "BeOliveira08",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^7.4.4"
+  }
+}

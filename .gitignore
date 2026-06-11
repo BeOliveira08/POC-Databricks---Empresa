@@ -1,0 +1,65 @@
+# Python virtual environments
+*.venv
+.venv
+*_venv*
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Node modules
+node_modules/
+
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# npm authentication (NEVER commit tokens)
+.npmrc
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Build artifacts
+dist/
+build/
+.cache/
+
+# Local Files
+*.local.*
+
+# Volume data (downloaded from Databricks — não commitar dados pessoais)
+data/
+exports/
+
+# Databricks
+.databricks/
+databricks.local.yml
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+.mypy_cache/
+*.egg-info/
+
+# Temp files
+query_temp.sql
+
+.idea/

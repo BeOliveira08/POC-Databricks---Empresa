@@ -1,0 +1,14 @@
+resources:
+  jobs:
+    full_pipeline:
+      name: "[portfolio] Full Pipeline"
+      tasks:
+        - task_key: run_validated_all
+          notebook_task:
+            notebook_path: ${workspace.file_path}/pipelines/notebooks/run_validated_all
+            base_parameters:
+              catalog: ${var.catalog_name}
+              volume_path: ${var.volume_path}
+          timeout_seconds: 14400
+          max_retries: 1
+          retry_on_timeout: true

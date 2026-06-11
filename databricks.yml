@@ -1,0 +1,40 @@
+bundle:
+  name: portfolio-lakehouse-template
+
+include:
+  - resources/*.yml
+
+sync:
+  include:
+    - pipelines/**
+
+variables:
+  catalog_name:
+    description: Unity Catalog name
+    default: portfolio
+
+  warehouse_id:
+    description: SQL Warehouse ID for queries
+    default: ""
+
+  volume_path:
+    description: Base path for volumes
+    default: /Volumes/portfolio/default/arquivos
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-<workspace-id>.<region>.azuredatabricks.net
+    variables:
+      catalog_name: portfolio_dev
+      volume_path: /Volumes/portfolio/default/arquivos
+
+  prod:
+    mode: production
+    workspace:
+      host: https://adb-<workspace-id>.<region>.azuredatabricks.net
+    variables:
+      catalog_name: portfolio
+      volume_path: /Volumes/portfolio/default/arquivos
