@@ -1,27 +1,46 @@
-# Portfolio Lakehouse Template
+# POC Databricks - Empresa
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/Platform-Databricks-red.svg)](https://databricks.com/)
 
-Template de projeto pessoal para portfolio com arquitetura medallion no Databricks. O objetivo e mostrar organizacao de pipelines Bronze, Silver e Gold, governanca de dados, validacoes e publicacao via Databricks Asset Bundles, sem expor dados reais.
+Projeto de portfolio focado em engenharia de dados no Databricks, com arquitetura medallion, governanca, validacoes e organizacao de deploy via Databricks Asset Bundles.
+
+O repositorio mostra como estruturar um pipeline fim a fim para ingestao, padronizacao, enriquecimento e consumo analitico de dados documentais e cadastrais, usando uma abordagem proxima do que se espera em um ambiente corporativo.
+
+## Objetivo do projeto
+
+Esta POC foi preparada para demonstrar conhecimento pratico em:
+
+- arquitetura medallion com camadas Bronze, Silver e Gold
+- organizacao de pipelines no Databricks
+- modelagem analitica com fatos, dimensoes e tabelas de apoio
+- governanca de dados e validacoes de consistencia
+- empacotamento e deploy com Databricks Asset Bundles
+- separacao entre configuracao, transformacoes, utilitarios e jobs
 
 ## O que este repositorio demonstra
 
-- arquitetura medallion aplicada a um caso de processamento documental
-- notebooks separados por camada e por dominio
-- jobs e deploy empacotados com Databricks Asset Bundles
-- validacoes de qualidade e governanca antes da promocao entre camadas
-- estrutura sanitizada para demonstracao publica no GitHub
+- ingestao de multiplas fontes em notebooks organizados por camada
+- tratamento progressivo dos dados da camada bruta ate a camada analitica
+- pipeline de setup para catalogo, schemas e tabelas
+- scripts auxiliares para validacao, exportacao e checagens locais
+- estrutura pronta para publicacao no GitHub sem expor dados sensiveis
 
-## O que foi removido desta copia
+## Arquitetura
 
-- referencias a pessoas e empresas reais
-- hosts, catalogos, volumes e identificadores reais do ambiente original
-- dados pessoais, arquivos auxiliares e exportacoes locais
-- credenciais e qualquer configuracao presa a um workspace especifico
+```text
+Bronze
+  -> leitura e padronizacao inicial das fontes
 
-## Estrutura
+Silver
+  -> limpeza, consolidacao, enriquecimento e regras de negocio
+
+Gold
+  -> fatos, dimensoes e visoes analiticas para consumo
+```
+
+## Estrutura do projeto
 
 ```text
 pipelines/
@@ -38,20 +57,20 @@ scripts/
 docs/
 ```
 
-## Fluxo resumido
+## Stack utilizada
 
-1. `bronze`: leitura e padronizacao inicial das fontes.
-2. `silver`: consolidacao, enriquecimento e regras de negocio.
-3. `gold`: fatos, dimensoes e visoes analiticas.
-4. `scripts/`: validacoes, exports e rotinas auxiliares.
-5. `resources/`: definicao de jobs e targets do bundle.
+- Databricks
+- Python
+- Databricks Asset Bundles
+- Unity Catalog
+- Git e GitHub
 
-## Configuracao local
+## Como executar localmente
 
 1. Copie `.env.example` para `.env`.
 2. Preencha `DATABRICKS_HOST`, `DATABRICKS_TOKEN` e `DATABRICKS_WAREHOUSE_ID`.
-3. Ajuste `catalog_name` e `volume_path` em `databricks.yml` se quiser usar outros nomes.
-4. Faça o upload dos arquivos de exemplo para o seu proprio volume ou adapte o caminho para uma massa de teste sua.
+3. Ajuste `catalog_name` e `volume_path` em `databricks.yml` conforme o seu workspace.
+4. Faça upload da sua massa de teste para o volume que sera usado no projeto.
 
 ## Comandos uteis
 
@@ -66,19 +85,19 @@ databricks bundle validate
 databricks bundle deploy -t dev
 ```
 
-## Dados locais de exemplo
+## Observacoes sobre a versao publicada
 
-Se quiser manter o projeto 100% local antes do upload manual, use a copia sanitizada em:
+- Esta versao foi sanitizada para portfolio.
+- Dados pessoais, identificadores reais, credenciais e referencias sensiveis foram removidos.
+- A estrutura tecnica foi preservada para evidenciar a modelagem e a organizacao do pipeline.
 
-`D:\portfolio_lakehouse_generic\arquivos_sanitizados_20260609_112320`
+## Possiveis proximos passos
 
-## Observacoes
-
-- `databricks.yml` continua como template e precisa do host do seu workspace para deploy.
-- Os notebooks estao organizados para demonstrar engenharia de dados e modelagem analitica, nao para expor um dataset especifico.
-- Os nomes de algumas tabelas e regras ainda refletem o caso de uso original, mas o conteudo desta versao foi neutralizado para portfolio.
+- conectar o bundle a um workspace Databricks pessoal
+- adicionar diagramas de arquitetura em `docs/`
+- publicar evidencias de execucao e resultados anonimizados
+- criar dashboards ou queries de demonstracao sobre a camada Gold
 
 ## Licenca
 
 MIT. Veja [LICENSE](./LICENSE).
-# POC-Databricks---Empresa
